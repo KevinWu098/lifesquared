@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { trpc } from "@/app/_trpc/client";
+import { Loader2 } from "lucide-react";
 
 const birthdayRegex = /^\d{2}\/\d{2}\/\d{4}$/;
 const FormSchema = z.object({
@@ -53,6 +55,8 @@ const FormSchema = z.object({
 const CreationForm = () => {
     const { toast } = useToast();
 
+    const [isUpdating, setIsUpdating] = useState<boolean>(false);
+
     const [birthday, setBirthday] = useState<string>();
     const [finalYear, setFinalYear] = useState<number>();
 
@@ -64,16 +68,35 @@ const CreationForm = () => {
         },
     });
 
+    const { mutate: updateUser } = trpc.updateUser.useMutation({
+        onSuccess: () => {
+            setIsUpdating(false);
+        },
+        onMutate() {
+            setIsUpdating(true);
+        },
+        onSettled() {
+            setIsUpdating(false);
+        },
+    });
+
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        setBirthday(data.birthday);
-        setFinalYear(parseInt(data.finalYear));
+        const { birthday: newBirthday, finalYear: newFinalYear } = data;
+
+        setBirthday(newBirthday);
+        setFinalYear(parseInt(newFinalYear));
+
+        updateUser({
+            birthday: newBirthday,
+            finalYear: parseInt(newFinalYear),
+        });
 
         toast({
             title: "You submitted the following values:",
             description: (
                 <div className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 text-white flex flex-col gap-y-1">
-                    <span>Birthday: {data.birthday}</span>
-                    <span>Final Year: {data.finalYear}</span>
+                    <span>Birthday: {newBirthday}</span>
+                    <span>Final Year: {newFinalYear}</span>
                 </div>
             ),
         });
@@ -128,7 +151,13 @@ const CreationForm = () => {
                         </div>
 
                         <div className="px-6 pb-6 flex justify-end">
-                            <Button type="submit">Create</Button>
+                            <Button type="submit">
+                                {isUpdating ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                    "Create"
+                                )}
+                            </Button>
                         </div>
                     </form>
                 </Form>

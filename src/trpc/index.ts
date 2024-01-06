@@ -31,6 +31,39 @@ export const appRouter = router({
 
         return { success: true };
     }),
+    updateUser: privateProcedure
+        .input(
+            z.object({
+                birthday: z.string(),
+                finalYear: z.number(),
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            const { userId } = ctx;
+            const { birthday, finalYear } = input;
+
+            const existingUser = await db.user.findFirst({
+                where: {
+                    id: userId,
+                },
+            });
+
+            if (!existingUser) {
+                throw new TRPCError({ code: "NOT_FOUND" });
+            }
+
+            const updatedUser = await db.user.update({
+                where: {
+                    id: userId,
+                },
+                data: {
+                    birthday: birthday,
+                    finalYear: finalYear,
+                },
+            });
+
+            return updatedUser;
+        }),
     // getUserFiles: privateProcedure.query(async ({ ctx }) => {
     //     const { userId } = ctx;
 

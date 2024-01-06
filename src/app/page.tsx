@@ -4,9 +4,27 @@ import { Loader2, Square } from "lucide-react";
 import CreationForm from "@/components/CreationForm";
 import LifeCalendar from "@/components/LifeCalendar";
 
+import { db } from "@/db";
+
+import { redirect } from "next/navigation";
+
 export default async function Home() {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
+
+    if (!user || !user.id) {
+        redirect("/auth-callback?origin=dashboard");
+    }
+
+    const dbUser = await db.user.findFirst({
+        where: {
+            id: user.id,
+        },
+    });
+
+    if (!dbUser) {
+        redirect("/auth-callback?origin=dashboard");
+    }
 
     return (
         <main className="wrapper mt-24 flex flex-col gap-y-16 gap-x-24 min-h-[calc(100vh-6rem)]">
