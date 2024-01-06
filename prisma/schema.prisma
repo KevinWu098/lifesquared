@@ -15,6 +15,6 @@ model User {
   id    String @id @unique // kinde user id
   email String @unique
 
-  birthday  String // mm/dd/yyyy
-  finalYear Int
+  birthday  String? // mm/dd/yyyy
+  finalYear Int?
 }
