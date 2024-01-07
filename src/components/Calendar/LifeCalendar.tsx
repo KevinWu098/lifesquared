@@ -1,20 +1,21 @@
 "use client";
 
-import { SquaredCheckbox } from "@/components/ui/rounded-checkbox";
 import { Separator } from "@/components/ui/separator";
+import RoundedBox from "@/components/Calendar/RoundedBox";
+
+import { RoundedCheckbox } from "./RoundedCheckBox";
 
 const UnbornCheckbox = () => {
     return (
-        <SquaredCheckbox
+        <RoundedBox
             className="w-5 h-5 pattern-diagonal-lines pattern-black pattern-bg-white
   pattern-size-1 pattern-opacity-50"
-            disabled={true}
         />
     );
 };
 
 const PastCheckbox = () => {
-    return <SquaredCheckbox className="w-5 h-5 bg-zinc-300" disabled={true} />;
+    return <RoundedBox className="w-5 h-5 bg-zinc-300" />;
 };
 
 function getWeeksFromStartOfYear(date: Date) {
@@ -111,7 +112,7 @@ const LifeCalendar = ({ birthday, finalYear }: LifeCalendarProps) => {
                                             normalizedPastWeeks,
                                     ).keys(),
                                 ].map((index) => (
-                                    <SquaredCheckbox
+                                    <RoundedCheckbox
                                         key={index}
                                         className="w-5 h-5"
                                     />

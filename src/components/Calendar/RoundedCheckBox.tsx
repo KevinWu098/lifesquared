@@ -6,7 +6,7 @@ import { Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-const SquaredCheckbox = React.forwardRef<
+const RoundedCheckbox = React.forwardRef<
     React.ElementRef<typeof CheckboxPrimitive.Root>,
     React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
 >(({ className, ...props }, ref) => (
@@ -14,7 +14,7 @@ const SquaredCheckbox = React.forwardRef<
         ref={ref}
         className={cn(
             "h-4 w-4 rounded-xs border border-primary data-[state=checked]:bg-zinc-600 text-zinc-600",
-            className
+            className,
         )}
         {...props}
     >
@@ -25,6 +25,6 @@ const SquaredCheckbox = React.forwardRef<
         </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
 ));
-SquaredCheckbox.displayName = "SquaredCheckbox";
+RoundedCheckbox.displayName = "RoundedCheckbox";
 
-export { SquaredCheckbox };
+export { RoundedCheckbox };

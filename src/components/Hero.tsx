@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { Loader2, Square } from "lucide-react";
 
+import LifeCalendar from "./Calendar/LifeCalendar";
 import CreationForm from "./CreationForm";
-import LifeCalendar from "./LifeCalendar";
 
 interface HeroProps {
     dbBirthday: string | null;
