@@ -20,6 +20,8 @@ const HeroContent = ({ dbBirthday, dbFinalYear }: HeroProps) => {
             <CreationForm
                 setBirthday={setBirthday}
                 setFinalYear={setFinalYear}
+                birthday={birthday}
+                finalYear={finalYear}
             />
 
             <Separator className="my-2 border-2" />

@@ -26,8 +26,6 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
 
-import LoginComponent from "./LoginComponent";
-
 const birthdayRegex = /^\d{2}\/\d{2}\/\d{4}$/;
 
 const isDateValid = (dateStr: string) => {
@@ -79,9 +77,16 @@ const FormSchema = z.object({
 interface CreationFormProps {
     setBirthday: Dispatch<SetStateAction<string | null>>;
     setFinalYear: Dispatch<SetStateAction<number | null>>;
+    birthday: string | null;
+    finalYear: number | null;
 }
 
-const CreationForm = ({ setBirthday, setFinalYear }: CreationFormProps) => {
+const CreationForm = ({
+    setBirthday,
+    setFinalYear,
+    birthday,
+    finalYear,
+}: CreationFormProps) => {
     const { toast } = useToast();
 
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
@@ -89,8 +94,8 @@ const CreationForm = ({ setBirthday, setFinalYear }: CreationFormProps) => {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            birthday: "",
-            finalYear: undefined,
+            birthday: birthday ?? undefined,
+            finalYear: finalYear?.toString() ?? "90",
         },
     });
 
