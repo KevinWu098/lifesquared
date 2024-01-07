@@ -1,6 +1,5 @@
 "use client";
 
-import { Separator } from "@/components/ui/separator";
 import RoundedBox from "@/components/Calendar/RoundedBox";
 
 import { RoundedCheckbox } from "./RoundedCheckBox";
@@ -75,8 +74,6 @@ const LifeCalendar = ({ birthday, finalYear }: LifeCalendarProps) => {
     return (
         <>
             <>
-                <Separator className="my-2" />
-
                 <div className="border-2 p-2 flex flex-col">
                     <h2 className="text-4xl font-bold text-center py-2">
                         Life Calendar
