@@ -15,14 +15,14 @@ const HeroContent = ({ dbBirthday, dbFinalYear }: HeroProps) => {
     const [finalYear, setFinalYear] = useState<number | null>(dbFinalYear);
 
     return (
-        <>
+        <div className="flex flex-col gap-y-8">
             <CreationForm
                 setBirthday={setBirthday}
                 setFinalYear={setFinalYear}
             />
 
             <LifeCalendar birthday={birthday} finalYear={finalYear} />
-        </>
+        </div>
     );
 };
 

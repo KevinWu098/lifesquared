@@ -12,20 +12,27 @@ const LoginComponent = async () => {
     const user = await getUser();
 
     return (
-        <div>
+        <>
             {user ? (
-                <>
-                    <div>User: {user.given_name}</div>
-                    <LogoutLink>Logout</LogoutLink>
-                </>
+                <LogoutLink>
+                    <Button
+                        className="w-100 text-base border-2"
+                        variant={"outline"}
+                    >
+                        Logout
+                    </Button>
+                </LogoutLink>
             ) : (
                 <LoginLink>
-                    <Button className="w-full text-base" variant={"link"}>
-                        Sign in
+                    <Button
+                        className="w-100 text-base border-2"
+                        variant={"outline"}
+                    >
+                        Sign in to create saved Calendar
                     </Button>
                 </LoginLink>
             )}
-        </div>
+        </>
     );
 };
 

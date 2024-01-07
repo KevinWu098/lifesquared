@@ -118,6 +118,9 @@ const config = {
                 "52": "repeat(52, minmax(0, 1fr))",
                 "53": "repeat(53, minmax(0, 1fr))",
             },
+            width: {
+                "100": "400px",
+            },
         },
     },
     plugins: [

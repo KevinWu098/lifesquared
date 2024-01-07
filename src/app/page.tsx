@@ -4,27 +4,25 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Loader2, Square } from "lucide-react";
 
 import HeroContent from "@/components/HeroContent";
+import LoginComponent from "@/components/LoginComponent";
 
 export default async function Home() {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
 
-    if (!user || !user.id) {
-        redirect("/auth-callback?origin=dashboard");
-    }
+    const dbUser = user
+        ? await db.user.findFirst({
+              where: {
+                  id: user?.id,
+              },
+          })
+        : null;
 
-    const dbUser = await db.user.findFirst({
-        where: {
-            id: user.id,
-        },
-    });
-
-    if (!dbUser) {
-        redirect("/auth-callback?origin=dashboard");
-    }
+    const birthday = dbUser?.birthday === undefined ? null : dbUser.birthday;
+    const finalYear = dbUser?.finalYear === undefined ? null : dbUser.finalYear;
 
     return (
-        <main className="wrapper mt-24 flex flex-col gap-y-8 gap-x-24 min-h-[calc(100vh-6rem)]">
+        <main className="wrapper mt-24 flex flex-col gap-x-24 min-h-[calc(100vh-6rem)]">
             <div>
                 <div
                     className="relative -ml-2.5 h-fit w-fit"
@@ -39,19 +37,17 @@ export default async function Home() {
                         />
                     </div>
                 </div>
-                <div className="w-full flex flex-row justify-between gap-x-24">
+                <div className="w-fit gap-y-8 mb-2 flex flex-col justify-between gap-x-24">
                     <div className="flex flex-col gap-8">
                         <h1 className="text-7xl font-bold whitespace-nowrap">
-                            Life, Squared
+                            {user ? `${user.given_name}'s ` : null}Life, Squared
                         </h1>
                     </div>
+                    <LoginComponent />
                 </div>
             </div>
 
-            <HeroContent
-                dbBirthday={dbUser.birthday}
-                dbFinalYear={dbUser.finalYear}
-            />
+            <HeroContent dbBirthday={birthday} dbFinalYear={finalYear} />
         </main>
     );
 }

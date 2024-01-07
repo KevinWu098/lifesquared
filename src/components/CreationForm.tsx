@@ -129,7 +129,7 @@ const CreationForm = ({ setBirthday, setFinalYear }: CreationFormProps) => {
     }
 
     return (
-        <Card className="w-[461.47px]">
+        <Card className="w-100 border-2">
             <CardHeader className="flex flex-row justify-between">
                 <div>
                     <CardTitle>Get Started</CardTitle>
