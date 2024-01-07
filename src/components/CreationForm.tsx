@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -185,7 +186,11 @@ const CreationForm = ({
                         <div className="px-6 pb-6 flex justify-between">
                             <Button
                                 variant={"outline"}
-                                // className="border-2"
+                                className={cn(
+                                    birthday && finalYear
+                                        ? "flex"
+                                        : "invisible",
+                                )}
                                 onClick={handleSave}
                             >
                                 {isSaving ? (
