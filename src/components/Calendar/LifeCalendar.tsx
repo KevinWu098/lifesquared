@@ -74,76 +74,83 @@ const LifeCalendar = ({ birthday, finalYear }: LifeCalendarProps) => {
 
     return (
         <>
-            <>
-                <Separator className="my-2 border-2" />
+            <Separator className="my-2 border-2" />
 
-                <div className="border-2 p-2 flex flex-col">
-                    <h2 className="text-4xl font-bold text-center py-2">
-                        Life Calendar
-                    </h2>
+            <div className="border-2 p-2 flex flex-col">
+                <h2 className="text-4xl font-bold text-center py-2">
+                    Life Calendar
+                </h2>
 
-                    <div className="flex flex-row justify-around">
-                        <div className="grid grid-rows-[54] gap-1 text-sm">
-                            <p className="mr-4 flex h-fit invisible">0000</p>
-                            {[
-                                ...Array(
-                                    unbornWeeks > 0 ? finalYear + 1 : finalYear,
-                                ).keys(),
-                            ].map((index) => (
-                                <p key={index} className="mr-4 h-fit flex">
-                                    {parseInt(birthday.split("/")[2]!) + index}
+                <div className="flex flex-row justify-around">
+                    <div className="grid grid-rows-[54] gap-1 text-sm">
+                        <p className="mr-4 flex h-fit invisible">0000</p>
+                        {[
+                            ...Array(
+                                unbornWeeks > 0 ? finalYear + 1 : finalYear,
+                            ).keys(),
+                        ].map((index) => (
+                            <p key={index} className="mr-4 h-fit flex">
+                                {parseInt(birthday.split("/")[2]!) + index}
+                            </p>
+                        ))}
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                        <div className="grid grid-cols-52 gap-1">
+                            {[...Array(52).keys()].map((index) => (
+                                <p
+                                    key={index}
+                                    className="text-sm h-5 w-5 text-center"
+                                >
+                                    {index + 1}
                                 </p>
                             ))}
                         </div>
+                        <div className="grid grid-cols-52 gap-1">
+                            {[...Array(unbornWeeks).keys()].map((index) => (
+                                <UnbornSquare key={index} />
+                            ))}
 
-                        <div className="flex flex-col gap-1">
-                            <div className="grid grid-cols-52 gap-1">
-                                {[...Array(52).keys()].map((index) => (
-                                    <p
-                                        key={index}
-                                        className="text-sm h-5 w-5 text-center"
-                                    >
-                                        {index + 1}
-                                    </p>
-                                ))}
-                            </div>
-                            <div className="grid grid-cols-52 gap-1">
-                                {[...Array(unbornWeeks).keys()].map((index) => (
-                                    <UnbornSquare key={index} />
-                                ))}
+                            {[...Array(pastWeeksBirthYear).keys()].map(
+                                (index) => (
+                                    <PastSquare key={index} />
+                                ),
+                            )}
 
-                                {[...Array(pastWeeksBirthYear).keys()].map(
-                                    (index) => (
-                                        <PastSquare key={index} />
-                                    ),
-                                )}
+                            {[...Array(pastWeeksNoninclusive).keys()].map(
+                                (index) => (
+                                    <PastSquare key={index} />
+                                ),
+                            )}
 
-                                {[...Array(pastWeeksNoninclusive).keys()].map(
-                                    (index) => (
-                                        <PastSquare key={index} />
-                                    ),
-                                )}
+                            {[...Array(nonPastWeeks).keys()].map((index) => (
+                                <RoundedCheckbox
+                                    key={index}
+                                    className="w-5 h-5"
+                                />
+                            ))}
 
-                                {[...Array(nonPastWeeks).keys()].map(
-                                    (index) => (
-                                        <RoundedCheckbox
-                                            key={index}
-                                            className="w-5 h-5"
-                                        />
-                                    ),
-                                )}
-
-                                {[...Array(unbornWeeks).keys()].map((index) => (
-                                    <RoundedCheckbox
-                                        key={index}
-                                        className="w-5 h-5"
-                                    />
-                                ))}
-                            </div>
+                            {[...Array(unbornWeeks).keys()].map((index) => (
+                                <RoundedCheckbox
+                                    key={index}
+                                    className="w-5 h-5"
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>
-            </>
+
+                <h2 className="text-center py-2 gap-x-2 flex-center flex-row">
+                    <span>
+                        <span className="text-3xl tracking-tight font-normal">
+                            Now
+                        </span>{" "}
+                        <br />{" "}
+                        <span className="text-xl font-normal">you're</span>
+                    </span>
+                    <span className="font-bold text-7xl">{finalYear}</span>
+                </h2>
+            </div>
         </>
     );
 };
