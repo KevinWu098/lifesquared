@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Loader2, Square } from "lucide-react";
