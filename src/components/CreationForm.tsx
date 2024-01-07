@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -24,7 +25,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
-import { Loader2 } from "lucide-react";
 
 const birthdayRegex = /^\d{2}\/\d{2}\/\d{4}$/;
 const FormSchema = z.object({
@@ -43,22 +43,19 @@ const FormSchema = z.object({
         },
         {
             message: "Final year must be between 80 and 100 (inclusive)",
-        }
+        },
     ),
 });
 
-// interface CreationFormProps {
-//   setBirthday: Dispatch<SetStateAction<string | undefined>>;
-//   setFinalYear: Dispatch<SetStateAction<number | undefined>>;
-// }
+interface CreationFormProps {
+    setBirthday: Dispatch<SetStateAction<string | null>>;
+    setFinalYear: Dispatch<SetStateAction<number | null>>;
+}
 
-const CreationForm = () => {
+const CreationForm = ({ setBirthday, setFinalYear }: CreationFormProps) => {
     const { toast } = useToast();
 
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
-
-    const [birthday, setBirthday] = useState<string>();
-    const [finalYear, setFinalYear] = useState<number>();
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -124,7 +121,6 @@ const CreationForm = () => {
                                             <Input
                                                 placeholder="mm/dd/yyyy"
                                                 {...field}
-                                                value={birthday}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -141,7 +137,6 @@ const CreationForm = () => {
                                             <Input
                                                 placeholder="90"
                                                 {...field}
-                                                value={finalYear}
                                             />
                                         </FormControl>
                                         <FormMessage />

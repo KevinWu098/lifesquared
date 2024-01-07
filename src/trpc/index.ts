@@ -1,8 +1,9 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { privateProcedure, publicProcedure, router } from "./trpc";
 import { TRPCError } from "@trpc/server";
-import { db } from "../db";
 import { z } from "zod";
+
+import { db } from "../db";
+import { privateProcedure, publicProcedure, router } from "./trpc";
 
 export const appRouter = router({
     authCallback: publicProcedure.query(async () => {
@@ -31,12 +32,21 @@ export const appRouter = router({
 
         return { success: true };
     }),
+    getUser: privateProcedure.query(async ({ ctx }) => {
+        const { userId } = ctx;
+
+        return await db.user.findFirst({
+            where: {
+                id: userId,
+            },
+        });
+    }),
     updateUser: privateProcedure
         .input(
             z.object({
                 birthday: z.string(),
                 finalYear: z.number(),
-            })
+            }),
         )
         .mutation(async ({ ctx, input }) => {
             const { userId } = ctx;
