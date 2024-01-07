@@ -142,13 +142,15 @@ const LifeCalendar = ({ birthday, finalYear }: LifeCalendarProps) => {
 
                 <h2 className="text-center py-2 gap-x-2 flex-center flex-row">
                     <span>
-                        <span className="text-3xl tracking-tight font-normal">
+                        <span className="text-2xl tracking-tight font-normal leading-3">
                             Now
-                        </span>{" "}
-                        <br />{" "}
-                        <span className="text-xl font-normal">you're</span>
+                        </span>
+                        <br />
+                        <span className="text-lg font-normal leading-[0.25rem]">
+                            you're
+                        </span>
                     </span>
-                    <span className="font-bold text-7xl">{finalYear}</span>
+                    <span className="font-bold text-5xl">{finalYear}</span>
                 </h2>
             </div>
         </>
