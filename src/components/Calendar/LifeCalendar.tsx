@@ -5,7 +5,7 @@ import RoundedBox from "@/components/Calendar/RoundedBox";
 
 import { RoundedCheckbox } from "./RoundedCheckBox";
 
-const UnbornCheckbox = () => {
+const UnbornSquare = () => {
     return (
         <RoundedBox
             className="w-5 h-5 pattern-diagonal-lines pattern-black pattern-bg-white
@@ -14,31 +14,41 @@ const UnbornCheckbox = () => {
     );
 };
 
-const PastCheckbox = () => {
+const PastSquare = () => {
     return <RoundedBox className="w-5 h-5 bg-zinc-300" />;
 };
 
-function getWeeksFromStartOfYear(date: Date) {
-    const startOfYear = new Date(date.getFullYear(), 0, 1);
-    const timeDifference = date.getTime() - startOfYear.getTime();
+function getYearDifference(birthdayString: string) {
+    const birthday = new Date(birthdayString);
+    const difference =
+        new Date().getFullYear() - new Date(birthday).getFullYear();
+
+    return difference;
+}
+
+function getWeeksFromStartOfYear(birthdayString: string) {
+    const birthday = new Date(birthdayString);
+
+    const startOfYear = new Date(birthday.getFullYear(), 0, 1);
+    const timeDifference = birthday.getTime() - startOfYear.getTime();
     const weeks = Math.ceil(timeDifference / (1000 * 60 * 60 * 24 * 7));
 
     return weeks;
 }
 
-function getWeeksFromToday(date: Date) {
-    const timeDifference = new Date().getTime() - date.getTime();
-    const weeks = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 7));
+function getPastWeeksInBirthYear(birthdayString: string) {
+    const birthday = new Date(birthdayString);
+    const today = new Date();
+
+    if (today.getFullYear() != birthday.getFullYear()) {
+        return 52 - getWeeksFromStartOfYear(birthday.toString());
+    }
+
+    const timeDifference = birthday.getTime() - today.getTime();
+    const weeks = Math.ceil(timeDifference / (1000 * 60 * 60 * 24 * 7));
 
     return weeks;
 }
-
-// function getDaysFromToday(date: Date) {
-//   const timeDifference = new Date().getTime() - date.getTime();
-//   const weeks = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-//   return weeks;
-// }
 
 interface LifeCalendarProps {
     birthday: string | null;
@@ -50,15 +60,18 @@ const LifeCalendar = ({ birthday, finalYear }: LifeCalendarProps) => {
         return null;
     }
 
-    const yearDifference =
-        new Date().getFullYear() - new Date(birthday).getFullYear();
+    const yearDifference = getYearDifference(birthday);
+    const unbornWeeks = getWeeksFromStartOfYear(birthday);
+    const pastWeeksBirthYear = getPastWeeksInBirthYear(birthday);
+    // Noninclusive refers to non-birth and non-current years
+    const pastWeeksNoninclusive =
+        (new Date().getFullYear() - new Date(birthday).getFullYear() - 1) * 52;
+    const nonPastWeeks =
+        finalYear * 52 -
+        unbornWeeks -
+        pastWeeksBirthYear -
+        pastWeeksNoninclusive;
 
-    const unbornWeeks = birthday
-        ? getWeeksFromStartOfYear(new Date(birthday))
-        : 0;
-
-    const pastWeeks = birthday ? getWeeksFromToday(new Date(birthday)) : 0;
-    const normalizedPastWeeks = pastWeeks - Math.round(yearDifference / 7);
     return (
         <>
             <>
@@ -69,10 +82,14 @@ const LifeCalendar = ({ birthday, finalYear }: LifeCalendarProps) => {
                         Life Calendar
                     </h2>
 
-                    <div className="flex flex-row">
-                        <div className="grid grid-rows-53 gap-1 text-sm">
+                    <div className="flex flex-row justify-around">
+                        <div className="grid grid-rows-[54] gap-1 text-sm">
                             <p className="mr-4 flex h-fit invisible">0000</p>
-                            {[...Array(finalYear).keys()].map((index) => (
+                            {[
+                                ...Array(
+                                    unbornWeeks > 0 ? finalYear + 1 : finalYear,
+                                ).keys(),
+                            ].map((index) => (
                                 <p key={index} className="mr-4 h-fit flex">
                                     {parseInt(birthday.split("/")[2]!) + index}
                                 </p>
@@ -92,26 +109,31 @@ const LifeCalendar = ({ birthday, finalYear }: LifeCalendarProps) => {
                             </div>
                             <div className="grid grid-cols-52 gap-1">
                                 {[...Array(unbornWeeks).keys()].map((index) => (
-                                    <UnbornCheckbox key={index} />
+                                    <UnbornSquare key={index} />
                                 ))}
 
-                                {[
-                                    ...Array(
-                                        normalizedPastWeeks >= 0
-                                            ? normalizedPastWeeks
-                                            : 0,
-                                    ).keys(),
-                                ].map((index) => (
-                                    <PastCheckbox key={index} />
-                                ))}
+                                {[...Array(pastWeeksBirthYear).keys()].map(
+                                    (index) => (
+                                        <PastSquare key={index} />
+                                    ),
+                                )}
 
-                                {[
-                                    ...Array(
-                                        finalYear * 52 -
-                                            unbornWeeks -
-                                            normalizedPastWeeks,
-                                    ).keys(),
-                                ].map((index) => (
+                                {[...Array(pastWeeksNoninclusive).keys()].map(
+                                    (index) => (
+                                        <PastSquare key={index} />
+                                    ),
+                                )}
+
+                                {[...Array(nonPastWeeks).keys()].map(
+                                    (index) => (
+                                        <RoundedCheckbox
+                                            key={index}
+                                            className="w-5 h-5"
+                                        />
+                                    ),
+                                )}
+
+                                {[...Array(unbornWeeks).keys()].map((index) => (
                                     <RoundedCheckbox
                                         key={index}
                                         className="w-5 h-5"
