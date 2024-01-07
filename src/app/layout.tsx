@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/Footer";
 import Providers from "@/components/Providers";
 
 const inter = Inter({
@@ -28,6 +29,7 @@ export default function RootLayout({
             <Providers>
                 <body className={inter.className}>
                     <main>{children}</main>
+                    <Footer />
                     <Toaster />
                 </body>
             </Providers>
