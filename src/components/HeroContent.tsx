@@ -4,7 +4,6 @@ import React, { useState } from "react";
 
 import LifeCalendar from "./Calendar/LifeCalendar";
 import CreationForm from "./CreationForm";
-import { Separator } from "./ui/separator";
 
 interface HeroProps {
     dbBirthday: string | null;
@@ -23,8 +22,6 @@ const HeroContent = ({ dbBirthday, dbFinalYear }: HeroProps) => {
                 birthday={birthday}
                 finalYear={finalYear}
             />
-
-            <Separator className="my-2 border-2" />
 
             <LifeCalendar birthday={birthday} finalYear={finalYear} />
         </div>
