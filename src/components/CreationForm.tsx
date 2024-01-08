@@ -190,7 +190,7 @@ const CreationForm = ({
 
                         <div className="px-6 pb-6 flex justify-end gap-x-4">
                             <CreatedAtPopover calendar={calendar} />
-                            <Button type="submit">
+                            <Button type="submit" className="w-20">
                                 {isUpdating ? (
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                 ) : (

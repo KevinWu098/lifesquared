@@ -51,7 +51,9 @@ const LifeCalendar = ({
     const unbornWeeks = getWeeksFromStartOfYear(birthday);
     const pastWeeksBirthYear = getPastWeeksInBirthYear(birthday); // use created at
     const pastWeeksNoninclusive = getPastWeeksNoninclusive(birthday);
-    const nonPastWeeks = getNonPastWeeks(birthday, finalYear);
+    const pastWeeksCurrentYear = getWeeksFromStartOfYear(new Date().toString()) - 1; // Don't include current week
+    const pastWeeks = pastWeeksBirthYear + pastWeeksNoninclusive + pastWeeksCurrentYear
+    const nonPastWeeks = finalYear * 52 - unbornWeeks - pastWeeks
     const futureWeeks = unbornWeeks + nonPastWeeks;
 
     const falseArray = Array.from({ length: futureWeeks }, () => false);
@@ -96,7 +98,7 @@ const LifeCalendar = ({
             <div className="border-2 py-2 px-8 flex flex-col">
                 <div className="py-4 flex flex-row justify-between">
                     <div className="flex-center gap-x-4 w-[165px]">
-                        <Button onClick={handleSave} variant={"secondary"}>
+                        <Button onClick={handleSave} variant={"secondary"} className="w-full">
                             {isSaving ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
@@ -144,13 +146,7 @@ const LifeCalendar = ({
                                 <UnbornSquare key={index} />
                             ))}
 
-                            {[...Array(pastWeeksBirthYear).keys()].map(
-                                (index) => (
-                                    <PastSquare key={index} />
-                                ),
-                            )}
-
-                            {[...Array(pastWeeksNoninclusive).keys()].map(
+                            {[...Array(pastWeeks).keys()].map(
                                 (index) => (
                                     <PastSquare key={index} />
                                 ),
