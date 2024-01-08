@@ -66,7 +66,6 @@ const FormSchema = z.object({
     finalYear: z.string().refine(
         (data) => {
             const parsedNumber = parseInt(data, 10);
-            return true;
             return (
                 !isNaN(parsedNumber) &&
                 parsedNumber >= 80 &&
