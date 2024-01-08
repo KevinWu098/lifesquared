@@ -188,12 +188,14 @@ const CreationForm = ({
 
                         <div className="px-6 pb-6 flex-between">
                             <p className="text-sm text-neutral-500">
-                                <span>Last Saved: </span>
+                                <span>
+                                    Created: <br />
+                                </span>
                                 {calendar
                                     ? new Date(
-                                          calendar.updatedAt,
+                                          calendar.createdAt,
                                       ).toLocaleDateString("en-US")
-                                    : "N/A"}
+                                    : null}
                             </p>
                             <Button type="submit">
                                 {isUpdating ? (
