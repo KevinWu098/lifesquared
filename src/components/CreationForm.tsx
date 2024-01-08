@@ -2,6 +2,7 @@
 
 import { Dispatch, SetStateAction, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { WeekSquare } from "@prisma/client";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -78,6 +79,7 @@ const FormSchema = z.object({
 interface CreationFormProps {
     setBirthday: Dispatch<SetStateAction<string | null>>;
     setFinalYear: Dispatch<SetStateAction<number | null>>;
+    setWeekSquares: Dispatch<SetStateAction<WeekSquare[] | null>>;
     birthday: string | null;
     finalYear: number | null;
 }
@@ -85,6 +87,7 @@ interface CreationFormProps {
 const CreationForm = ({
     setBirthday,
     setFinalYear,
+    setWeekSquares,
     birthday,
     finalYear,
 }: CreationFormProps) => {
@@ -99,6 +102,8 @@ const CreationForm = ({
             finalYear: finalYear?.toString() ?? "90",
         },
     });
+
+    const calendar = trpc.getUser.useQuery().data?.calendar;
 
     const { mutate: updateUser } = trpc.updateUser.useMutation({
         onSuccess: () => {
@@ -117,6 +122,7 @@ const CreationForm = ({
 
         setBirthday(newBirthday);
         setFinalYear(parseInt(newFinalYear));
+        setWeekSquares(null);
 
         updateUser({
             birthday: newBirthday,
@@ -182,7 +188,12 @@ const CreationForm = ({
 
                         <div className="px-6 pb-6 flex-between">
                             <p className="text-sm text-neutral-500">
-                                Last Saved: {}
+                                <span>Last Saved: </span>
+                                {calendar
+                                    ? new Date(
+                                          calendar.updatedAt,
+                                      ).toLocaleDateString("en-US")
+                                    : "N/A"}
                             </p>
                             <Button type="submit">
                                 {isUpdating ? (

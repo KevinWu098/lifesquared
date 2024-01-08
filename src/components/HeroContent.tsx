@@ -15,12 +15,16 @@ interface HeroProps {
 const HeroContent = ({ dbBirthday, dbFinalYear, dbWeekSquares }: HeroProps) => {
     const [birthday, setBirthday] = useState<string | null>(dbBirthday);
     const [finalYear, setFinalYear] = useState<number | null>(dbFinalYear);
+    const [weekSquares, setWeekSquares] = useState<WeekSquare[] | null>(
+        dbWeekSquares,
+    );
 
     return (
         <div className="flex flex-col gap-y-8">
             <CreationForm
                 setBirthday={setBirthday}
                 setFinalYear={setFinalYear}
+                setWeekSquares={setWeekSquares}
                 birthday={birthday}
                 finalYear={finalYear}
             />
@@ -28,7 +32,7 @@ const HeroContent = ({ dbBirthday, dbFinalYear, dbWeekSquares }: HeroProps) => {
             <LifeCalendar
                 birthday={birthday}
                 finalYear={finalYear}
-                dbWeekSquares={dbWeekSquares}
+                dbWeekSquares={weekSquares}
             />
         </div>
     );

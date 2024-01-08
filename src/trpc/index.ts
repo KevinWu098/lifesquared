@@ -39,6 +39,9 @@ export const appRouter = router({
             where: {
                 id: userId,
             },
+            include: {
+                calendar: true,
+            },
         });
     }),
     updateUser: privateProcedure
@@ -66,9 +69,15 @@ export const appRouter = router({
                 where: {
                     id: userId,
                 },
+                include: {
+                    calendar: true,
+                },
                 data: {
                     birthday: birthday,
                     finalYear: finalYear,
+                    calendar: {
+                        disconnect: true,
+                    },
                 },
             });
 

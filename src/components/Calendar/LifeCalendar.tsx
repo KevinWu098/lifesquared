@@ -90,8 +90,8 @@ const LifeCalendar = ({
         <>
             <Separator className="my-2 border-2" />
 
-            <div className="border-2 p-2 flex flex-col">
-                <div className="py-2 flex flex-row justify-between">
+            <div className="border-2 py-2 px-8 flex flex-col">
+                <div className="py-4 flex flex-row justify-between">
                     <Button className="w-[130px]" onClick={handleSave}>
                         {isSaving ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -107,7 +107,7 @@ const LifeCalendar = ({
                     </Button>
                 </div>
 
-                <div className="flex flex-row justify-around">
+                <div className="flex flex-row justify-between">
                     <div className="grid grid-rows-[54] gap-1 text-sm">
                         <p className="mr-4 flex h-fit invisible">0000</p>
                         {[
