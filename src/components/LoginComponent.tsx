@@ -14,7 +14,7 @@ const LoginComponent = async () => {
     return (
         <>
             {user ? (
-                <LogoutLink>
+                <LogoutLink className="w-fit">
                     <Button
                         className="w-100 text-base border-2"
                         variant={"outline"}
@@ -23,7 +23,7 @@ const LoginComponent = async () => {
                     </Button>
                 </LogoutLink>
             ) : (
-                <LoginLink>
+                <LoginLink className="w-fit">
                     <Button
                         className="w-100 text-base border-2"
                         variant={"outline"}
