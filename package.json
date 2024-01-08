@@ -7,6 +7,7 @@
         "db:push": "prisma db push",
         "db:studio": "prisma studio",
         "dev": "next dev -p 3002",
+        "format": "npx prettier --write .",
         "postinstall": "prisma generate",
         "lint": "next lint",
         "start": "next start"
