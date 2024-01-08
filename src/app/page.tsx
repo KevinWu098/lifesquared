@@ -17,8 +17,21 @@ export default async function Home() {
           })
         : null;
 
+    const dbCalendar = user
+        ? await db.calendar.findFirst({
+              where: {
+                  userId: user.id,
+              },
+              include: {
+                  weekSquares: true,
+              },
+          })
+        : null;
+
     const birthday = dbUser?.birthday === undefined ? null : dbUser.birthday;
     const finalYear = dbUser?.finalYear === undefined ? null : dbUser.finalYear;
+    const weekSquares =
+        dbCalendar?.weekSquares === undefined ? null : dbCalendar.weekSquares;
 
     return (
         <main className="wrapper mt-24 flex flex-col gap-x-24 min-h-[calc(100vh-6rem)]">
@@ -46,7 +59,11 @@ export default async function Home() {
                 </div>
             </div>
 
-            <HeroContent dbBirthday={birthday} dbFinalYear={finalYear} />
+            <HeroContent
+                dbBirthday={birthday}
+                dbFinalYear={finalYear}
+                dbWeekSquares={weekSquares}
+            />
         </main>
     );
 }

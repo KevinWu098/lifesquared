@@ -1,8 +1,20 @@
 "use client";
 
-import RoundedBox from "@/components/Calendar/RoundedBox";
+import { useState } from "react";
+import { WeekSquare } from "@prisma/client";
+import { Loader2 } from "lucide-react";
 
+import RoundedBox from "@/components/Calendar/RoundedBox";
+import { trpc } from "@/app/_trpc/client";
+
+import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import {
+    getNonPastWeeks,
+    getPastWeeksInBirthYear,
+    getPastWeeksNoninclusive,
+    getWeeksFromStartOfYear,
+} from "./CalendarUtils";
 import { RoundedCheckbox } from "./RoundedCheckBox";
 
 const UnbornSquare = () => {
@@ -18,68 +30,82 @@ const PastSquare = () => {
     return <RoundedBox className="w-5 h-5 bg-zinc-300" />;
 };
 
-function getYearDifference(birthdayString: string) {
-    const birthday = new Date(birthdayString);
-    const difference =
-        new Date().getFullYear() - new Date(birthday).getFullYear();
-
-    return difference;
-}
-
-function getWeeksFromStartOfYear(birthdayString: string) {
-    const birthday = new Date(birthdayString);
-
-    const startOfYear = new Date(birthday.getFullYear(), 0, 1);
-    const timeDifference = birthday.getTime() - startOfYear.getTime();
-    const weeks = Math.ceil(timeDifference / (1000 * 60 * 60 * 24 * 7));
-
-    return weeks;
-}
-
-function getPastWeeksInBirthYear(birthdayString: string) {
-    const birthday = new Date(birthdayString);
-    const today = new Date();
-
-    if (today.getFullYear() != birthday.getFullYear()) {
-        return 52 - getWeeksFromStartOfYear(birthday.toString());
-    }
-
-    const timeDifference = birthday.getTime() - today.getTime();
-    const weeks = Math.ceil(timeDifference / (1000 * 60 * 60 * 24 * 7));
-
-    return weeks;
-}
-
 interface LifeCalendarProps {
     birthday: string | null;
     finalYear: number | null;
+    dbWeekSquares: WeekSquare[] | null;
 }
 
-const LifeCalendar = ({ birthday, finalYear }: LifeCalendarProps) => {
+const LifeCalendar = ({
+    birthday,
+    finalYear,
+    dbWeekSquares,
+}: LifeCalendarProps) => {
     if (!birthday || !finalYear) {
         return null;
     }
 
-    const yearDifference = getYearDifference(birthday);
     const unbornWeeks = getWeeksFromStartOfYear(birthday);
     const pastWeeksBirthYear = getPastWeeksInBirthYear(birthday);
-    // Noninclusive refers to non-birth and non-current years
-    const pastWeeksNoninclusive =
-        (new Date().getFullYear() - new Date(birthday).getFullYear() - 1) * 52;
-    const nonPastWeeks =
-        finalYear * 52 -
-        unbornWeeks -
-        pastWeeksBirthYear -
-        pastWeeksNoninclusive;
+    const pastWeeksNoninclusive = getPastWeeksNoninclusive(birthday);
+    const nonPastWeeks = getNonPastWeeks(birthday, finalYear);
+    const futureWeeks = unbornWeeks + nonPastWeeks;
+
+    const falseArray = Array.from({ length: futureWeeks }, () => false);
+    const weekSquares = dbWeekSquares
+        ? dbWeekSquares.map((weekSquare) => weekSquare.value)
+        : falseArray;
+
+    const [isSaving, setIsSaving] = useState(false);
+    const [checkboxValues, setCheckboxValues] =
+        useState<boolean[]>(weekSquares);
+
+    const handleCheckboxChange = (index: number) => {
+        const newValues = [...checkboxValues];
+
+        newValues[index] = !newValues[index];
+
+        setCheckboxValues(newValues);
+    };
+
+    const { mutate: saveCalendar } = trpc.saveCalendar.useMutation({
+        onSuccess: () => {
+            setIsSaving(false);
+        },
+        onMutate() {
+            setIsSaving(true);
+        },
+        onSettled() {
+            setIsSaving(false);
+        },
+    });
+
+    const handleSave = () => {
+        saveCalendar({
+            calendar: checkboxValues,
+        });
+    };
 
     return (
         <>
             <Separator className="my-2 border-2" />
 
             <div className="border-2 p-2 flex flex-col">
-                <h2 className="text-4xl font-bold text-center py-2">
-                    Life Calendar
-                </h2>
+                <div className="py-2 flex flex-row justify-between">
+                    <Button className="w-[130px]" onClick={handleSave}>
+                        {isSaving ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                            "Save Calendar"
+                        )}
+                    </Button>
+                    <h2 className="text-4xl font-bold text-center">
+                        Life Calendar
+                    </h2>
+                    <Button className="invisible w-[130px]">
+                        Toggle Button
+                    </Button>
+                </div>
 
                 <div className="flex flex-row justify-around">
                     <div className="grid grid-rows-[54] gap-1 text-sm">
@@ -123,17 +149,12 @@ const LifeCalendar = ({ birthday, finalYear }: LifeCalendarProps) => {
                                 ),
                             )}
 
-                            {[...Array(nonPastWeeks).keys()].map((index) => (
+                            {[...Array(futureWeeks).keys()].map((index) => (
                                 <RoundedCheckbox
                                     key={index}
                                     className="w-5 h-5"
-                                />
-                            ))}
-
-                            {[...Array(unbornWeeks).keys()].map((index) => (
-                                <RoundedCheckbox
-                                    key={index}
-                                    className="w-5 h-5"
+                                    checked={checkboxValues[index]}
+                                    onClick={() => handleCheckboxChange(index)}
                                 />
                             ))}
                         </div>

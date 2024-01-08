@@ -74,33 +74,81 @@ export const appRouter = router({
 
             return updatedUser;
         }),
-    // getUserFiles: privateProcedure.query(async ({ ctx }) => {
-    //     const { userId } = ctx;
+    saveCalendar: privateProcedure
+        .input(
+            z.object({
+                calendar: z.array(z.boolean()),
+            }),
+        )
+        .mutation(async ({ ctx, input }) => {
+            const { userId } = ctx;
+            const { calendar } = input;
 
-    //     return await db.file.findMany({
-    //         where: {
-    //             userId,
-    //         },
-    //     });
-    // }),
-    // getFile: privateProcedure
-    //     .input(z.object({ key: z.string() }))
-    //     .mutation(async ({ ctx, input }) => {
-    //         const { userId } = ctx;
+            const existingUser = await db.user.findFirst({
+                where: {
+                    id: userId,
+                },
+            });
 
-    //         const file = await db.file.findFirst({
-    //             where: {
-    //                 key: input.key,
-    //                 userId,
-    //             },
-    //         });
+            if (!existingUser) {
+                throw new TRPCError({ code: "NOT_FOUND" });
+            }
 
-    //         if (!file) {
-    //             throw new TRPCError({ code: "NOT_FOUND" });
-    //         }
+            const existingCalendar = await db.calendar.findFirst({
+                where: {
+                    userId: userId,
+                },
+            });
 
-    //         return file;
-    //     }),
+            if (existingCalendar === null) {
+                await db.calendar.create({
+                    data: {
+                        userId: userId,
+                        weekSquares: {
+                            createMany: {
+                                data: calendar.map((week, index) => ({
+                                    value: week,
+                                    index: index,
+                                })),
+                            },
+                        },
+                    },
+                });
+            } else {
+                const weekSquaresToUpdate = await db.weekSquare.findMany({
+                    where: {
+                        calendarId: existingCalendar.id,
+                    },
+                });
+
+                const updateOperations = calendar.map((week, index) => {
+                    const weekSquare = weekSquaresToUpdate[index];
+                    if (weekSquare.value !== week) {
+                        return {
+                            where: {
+                                id: weekSquare.id,
+                            },
+                            data: {
+                                value: week,
+                                index: index,
+                            },
+                        };
+                    } else {
+                        return false;
+                    }
+                });
+
+                for (const operation of updateOperations) {
+                    if (operation == false) {
+                        continue;
+                    }
+
+                    await db.weekSquare.update({
+                        ...operation,
+                    });
+                }
+            }
+        }),
 });
 
 export type AppRouter = typeof appRouter;

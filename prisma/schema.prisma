@@ -11,22 +11,43 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// How Schema Works
+// A User is created without a birthday and finalYear 
+// A User is updated with a birthday and finalYear once a calendar is generated ("Create" Button)
 model User {
   id    String @id @unique // kinde user id
   email String @unique
 
   birthday  String? // mm/dd/yyyy
   finalYear Int?
-  Calendar  Calendar[]
+  calendar  Calendar?
 }
+
+// A Calendar is always created/updated with an array of WeekSquare when Save Calendar is clicked
 
 model Calendar {
   id String @id @default(cuid())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+
+  user        User?        @relation(fields: [userId], references: [id])
+  userId      String?      @unique
+  weekSquares WeekSquare[]
 
   @@index([userId])
+}
+
+model WeekSquare {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  value Boolean
+  index Int
+
+  calendar   Calendar @relation(fields: [calendarId], references: [id])
+  calendarId String
+
+  @@index([calendarId])
 }

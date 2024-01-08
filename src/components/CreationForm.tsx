@@ -91,7 +91,6 @@ const CreationForm = ({
     const { toast } = useToast();
 
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
-    const [isSaving, setIsSaving] = useState<boolean>(false);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -134,8 +133,6 @@ const CreationForm = ({
             ),
         });
     }
-
-    const handleSave = () => {};
 
     return (
         <Card className="w-100 border-2">
@@ -183,23 +180,10 @@ const CreationForm = ({
                             />
                         </div>
 
-                        <div className="px-6 pb-6 flex justify-between">
-                            <Button
-                                variant={"outline"}
-                                className={cn(
-                                    birthday && finalYear
-                                        ? "flex"
-                                        : "invisible",
-                                )}
-                                onClick={handleSave}
-                            >
-                                {isSaving ? (
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                ) : (
-                                    "Save Calendar"
-                                )}
-                            </Button>
-
+                        <div className="px-6 pb-6 flex-between">
+                            <p className="text-sm text-neutral-500">
+                                Last Saved: {}
+                            </p>
                             <Button type="submit">
                                 {isUpdating ? (
                                     <Loader2 className="h-4 w-4 animate-spin" />
