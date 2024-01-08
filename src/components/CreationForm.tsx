@@ -188,7 +188,7 @@ const CreationForm = ({
                             />
                         </div>
 
-                        <div className="px-6 pb-6 flex-between">
+                        <div className="px-6 pb-6 flex justify-end gap-x-4">
                             <CreatedAtPopover calendar={calendar} />
                             <Button type="submit">
                                 {isUpdating ? (

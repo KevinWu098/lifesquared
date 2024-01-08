@@ -49,7 +49,7 @@ const LifeCalendar = ({
     const calendar = trpc.getUser.useQuery().data?.calendar;
 
     const unbornWeeks = getWeeksFromStartOfYear(birthday);
-    const pastWeeksBirthYear = getPastWeeksInBirthYear(birthday);
+    const pastWeeksBirthYear = getPastWeeksInBirthYear(birthday); // use created at
     const pastWeeksNoninclusive = getPastWeeksNoninclusive(birthday);
     const nonPastWeeks = getNonPastWeeks(birthday, finalYear);
     const futureWeeks = unbornWeeks + nonPastWeeks;
@@ -96,7 +96,7 @@ const LifeCalendar = ({
             <div className="border-2 py-2 px-8 flex flex-col">
                 <div className="py-4 flex flex-row justify-between">
                     <div className="flex-center gap-x-4 w-[165px]">
-                        <Button onClick={handleSave}>
+                        <Button onClick={handleSave} variant={"secondary"}>
                             {isSaving ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
