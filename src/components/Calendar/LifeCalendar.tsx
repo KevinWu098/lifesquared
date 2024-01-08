@@ -140,7 +140,7 @@ const LifeCalendar = ({ birthday, finalYear }: LifeCalendarProps) => {
                     </div>
                 </div>
 
-                <h2 className="text-center py-2 gap-x-2 flex-center flex-row">
+                <h2 className="text-center py-4 gap-x-2 flex-center flex-row">
                     <span>
                         <span className="text-2xl tracking-tight font-normal leading-3">
                             Now
