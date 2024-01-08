@@ -7,6 +7,7 @@ import { Loader2 } from "lucide-react";
 import RoundedBox from "@/components/Calendar/RoundedBox";
 import { trpc } from "@/app/_trpc/client";
 
+import { UpdatedAtPopover } from "../PopoverComponents";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import {
@@ -94,7 +95,7 @@ const LifeCalendar = ({
 
             <div className="border-2 py-2 px-8 flex flex-col">
                 <div className="py-4 flex flex-row justify-between">
-                    <div className="flex-center gap-2 w-[250px]">
+                    <div className="flex-center gap-x-4 w-[165px]">
                         <Button onClick={handleSave}>
                             {isSaving ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -103,21 +104,12 @@ const LifeCalendar = ({
                             )}
                         </Button>
 
-                        <p className="text-md text-neutral-500 leading-snug">
-                            <span>
-                                Last Saved: <br />
-                            </span>
-                            {calendar
-                                ? new Date(
-                                      calendar.updatedAt,
-                                  ).toLocaleDateString("en-US")
-                                : "N/A"}
-                        </p>
+                        <UpdatedAtPopover calendar={calendar} />
                     </div>
                     <h2 className="text-4xl font-bold text-center">
                         Life Calendar
                     </h2>
-                    <Button className="invisible w-[250px]">
+                    <Button className="invisible w-[165px]">
                         Toggle Button
                     </Button>
                 </div>

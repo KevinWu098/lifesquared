@@ -28,6 +28,9 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
 
+import { CreatedAtPopover } from "./PopoverComponents";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+
 const birthdayRegex = /^\d{2}\/\d{2}\/\d{4}$/;
 
 const isDateValid = (dateStr: string) => {
@@ -187,16 +190,7 @@ const CreationForm = ({
                         </div>
 
                         <div className="px-6 pb-6 flex-between">
-                            <p className="text-sm text-neutral-500">
-                                <span>
-                                    Created: <br />
-                                </span>
-                                {calendar
-                                    ? new Date(
-                                          calendar.createdAt,
-                                      ).toLocaleDateString("en-US")
-                                    : null}
-                            </p>
+                            <CreatedAtPopover calendar={calendar} />
                             <Button type="submit">
                                 {isUpdating ? (
                                     <Loader2 className="h-4 w-4 animate-spin" />
