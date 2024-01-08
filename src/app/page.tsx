@@ -1,9 +1,8 @@
+import HeroContent from "@/components/HeroContent";
+import LoginComponent from "@/components/LoginComponent";
 import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Loader2, Square } from "lucide-react";
-
-import HeroContent from "@/components/HeroContent";
-import LoginComponent from "@/components/LoginComponent";
 
 export default async function Home() {
     const { getUser } = getKindeServerSession();

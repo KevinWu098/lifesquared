@@ -1,11 +1,10 @@
 import React from "react";
+import { Button } from "@/components/ui/button";
 import {
     getKindeServerSession,
     LoginLink,
     LogoutLink,
 } from "@kinde-oss/kinde-auth-nextjs/server";
-
-import { Button } from "@/components/ui/button";
 
 const LoginComponent = async () => {
     const { getUser } = getKindeServerSession();
