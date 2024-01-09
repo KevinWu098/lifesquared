@@ -98,7 +98,7 @@ const CreationForm = ({
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            birthday: birthday ?? undefined,
+            birthday: birthday ?? "",
             finalYear: finalYear?.toString() ?? "90",
         },
     });
