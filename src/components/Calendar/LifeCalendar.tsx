@@ -45,7 +45,8 @@ const LifeCalendar = ({
         return null;
     }
 
-    const calendar = trpc.getUser.useQuery().data?.calendar;
+    const user = trpc.getUser.useQuery();
+    const calendar = user.data?.calendar;
 
     const unbornWeeks = getWeeksFromStartOfYear(birthday);
     const pastWeeksBirthYear = getPastWeeksInBirthYear(birthday); // use created at
@@ -103,6 +104,7 @@ const LifeCalendar = ({
                             onClick={handleSave}
                             variant={"secondary"}
                             className="w-full"
+                            disabled={!user.data}
                         >
                             {isSaving ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />

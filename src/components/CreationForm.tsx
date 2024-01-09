@@ -28,7 +28,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { CreatedAtPopover } from "./PopoverComponents";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 const birthdayRegex = /^\d{2}\/\d{2}\/\d{4}$/;
 
