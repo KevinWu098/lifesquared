@@ -124,6 +124,15 @@ export const appRouter = router({
                     },
                 });
             } else {
+                await db.calendar.update({
+                    where: {
+                        id: existingCalendar.id,
+                    },
+                    data: {
+                        updatedAt: new Date(),
+                    },
+                });
+
                 const weekSquaresToUpdate = await db.weekSquare.findMany({
                     where: {
                         calendarId: existingCalendar.id,
