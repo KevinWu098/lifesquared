@@ -10,7 +10,6 @@ import { UpdatedAtPopover } from "../PopoverComponents";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import {
-    getNonPastWeeks,
     getPastWeeksInBirthYear,
     getPastWeeksNoninclusive,
     getWeeksFromStartOfYear,
@@ -101,9 +100,9 @@ const LifeCalendar = ({
 
     return (
         <>
-            <Separator className="my-2 border-2" />
+            <Separator className="my-2" />
 
-            <div className="border-2 py-2 px-8 flex flex-col">
+            <div className="py-2 px-8 flex flex-col">
                 <div className="py-4 flex flex-row justify-between">
                     <div className="flex-center gap-x-4 w-[165px]">
                         <Button

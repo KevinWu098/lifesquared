@@ -14,19 +14,13 @@ const LoginComponent = async () => {
         <>
             {user ? (
                 <LogoutLink className="w-fit">
-                    <Button
-                        className="w-100 text-base border-2"
-                        variant={"outline"}
-                    >
+                    <Button className="w-100 text-base" variant={"outline"}>
                         Logout
                     </Button>
                 </LogoutLink>
             ) : (
                 <LoginLink className="w-fit">
-                    <Button
-                        className="w-100 text-base border-2"
-                        variant={"outline"}
-                    >
+                    <Button className="w-100 text-base" variant={"outline"}>
                         Sign in to save Calendar
                     </Button>
                 </LoginLink>

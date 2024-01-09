@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { WeekSquare } from "@prisma/client";
 import { Loader2 } from "lucide-react";
@@ -141,7 +140,7 @@ const CreationForm = ({
     }
 
     return (
-        <Card className="w-100 border-2">
+        <Card className="w-100">
             <CardHeader className="flex flex-row justify-between">
                 <div>
                     <CardTitle>Get Started</CardTitle>
