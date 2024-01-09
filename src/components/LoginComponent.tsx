@@ -27,7 +27,7 @@ const LoginComponent = async () => {
                         className="w-100 text-base border-2"
                         variant={"outline"}
                     >
-                        Sign in to create saved Calendar
+                        Sign in to save Calendar
                     </Button>
                 </LoginLink>
             )}
