@@ -49,8 +49,14 @@ const LifeCalendar = ({
     const calendar = user.data?.calendar;
 
     const unbornWeeks = getWeeksFromStartOfYear(birthday);
-    const pastWeeksBirthYear = getPastWeeksInBirthYear(birthday); // use created at
-    const pastWeeksNoninclusive = getPastWeeksNoninclusive(birthday);
+    const pastWeeksBirthYear = getPastWeeksInBirthYear(
+        birthday,
+        calendar?.createdAt,
+    );
+    const pastWeeksNoninclusive = getPastWeeksNoninclusive(
+        birthday,
+        calendar?.createdAt,
+    );
     const pastWeeksCurrentYear =
         getWeeksFromStartOfYear(new Date().toString()) - 1; // Don't include current week
     const pastWeeks =
