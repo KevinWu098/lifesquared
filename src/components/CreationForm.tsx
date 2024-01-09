@@ -175,6 +175,7 @@ const CreationForm = ({
                                         <FormLabel>Final Year</FormLabel>
                                         <FormControl>
                                             <Input
+                                                type="number"
                                                 placeholder="90"
                                                 {...field}
                                             />
