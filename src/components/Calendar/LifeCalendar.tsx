@@ -58,8 +58,10 @@ const LifeCalendar = ({
     );
     const pastWeeksCurrentYear =
         getWeeksFromStartOfYear(new Date().toString()) - 1; // Don't include current week
-    const pastWeeks =
-        pastWeeksBirthYear + pastWeeksNoninclusive + pastWeeksCurrentYear;
+    const pastWeeks = Math.max(
+        pastWeeksBirthYear + pastWeeksNoninclusive + pastWeeksCurrentYear,
+        0,
+    );
     const nonPastWeeks = finalYear * 52 - unbornWeeks - pastWeeks;
     const futureWeeks = unbornWeeks + nonPastWeeks;
 
