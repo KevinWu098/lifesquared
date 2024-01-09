@@ -63,7 +63,7 @@ const LifeCalendar = ({
         0,
     );
     const nonPastWeeks = finalYear * 52 - unbornWeeks - pastWeeks;
-    const futureWeeks = unbornWeeks + nonPastWeeks;
+    const futureWeeks = Math.max(unbornWeeks + nonPastWeeks, 0);
 
     const falseArray = Array.from({ length: futureWeeks }, () => false);
     const weekSquares = dbWeekSquares
