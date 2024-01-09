@@ -3,7 +3,7 @@ export function getWeeksFromStartOfYear(birthdayString: string) {
 
     const startOfYear = new Date(birthday.getFullYear(), 0, 1);
     const timeDifference = birthday.getTime() - startOfYear.getTime();
-    const weeks = Math.ceil(timeDifference / (1000 * 60 * 60 * 24 * 7));
+    const weeks = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 7));
 
     return weeks;
 }
