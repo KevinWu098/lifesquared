@@ -65,7 +65,7 @@ const FormSchema = z.object({
             const parsedNumber = parseInt(data, 10);
             return (
                 !isNaN(parsedNumber) &&
-                parsedNumber >= 80 &&
+                parsedNumber >= 20 &&
                 parsedNumber <= 100
             );
         },

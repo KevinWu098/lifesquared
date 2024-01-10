@@ -10,9 +10,10 @@ import { UpdatedAtPopover } from "../PopoverComponents";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import {
-    getPastWeeksInBirthYear,
+    getPastWeeksBirthYear,
+    getPastWeeksCurrentYear,
     getPastWeeksNoninclusive,
-    getWeeksFromStartOfYear,
+    getUnbornWeeks,
 } from "./CalendarUtils";
 import { RoundedCheckbox } from "./RoundedCheckBox";
 
@@ -47,18 +48,25 @@ const LifeCalendar = ({
     const user = trpc.getUser.useQuery();
     const calendar = user.data?.calendar;
 
-    const unbornWeeks = getWeeksFromStartOfYear(birthday);
-    const pastWeeksBirthYear = getPastWeeksInBirthYear(
+    const unbornWeeks = getUnbornWeeks(birthday);
+    const pastWeeksBirthYear = getPastWeeksBirthYear(
         birthday,
         calendar?.createdAt,
     );
     const pastWeeksNoninclusive = getPastWeeksNoninclusive(
         birthday,
+        finalYear,
         calendar?.createdAt,
     );
-    const pastWeeksCurrentYear = getWeeksFromStartOfYear(new Date().toString());
+    const pastWeeksCurrentOrFinalYear = getPastWeeksCurrentYear(
+        birthday,
+        finalYear,
+    );
+
     const pastWeeks = Math.max(
-        pastWeeksBirthYear + pastWeeksNoninclusive + pastWeeksCurrentYear,
+        pastWeeksBirthYear +
+            pastWeeksNoninclusive +
+            pastWeeksCurrentOrFinalYear,
         0,
     );
     const futureWeeks = Math.max(finalYear * 52 - pastWeeks, 0);

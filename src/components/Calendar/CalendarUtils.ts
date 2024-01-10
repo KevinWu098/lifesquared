@@ -1,4 +1,4 @@
-export function getWeeksFromStartOfYear(birthdayString: string) {
+export function getUnbornWeeks(birthdayString: string) {
     const birthday = new Date(birthdayString);
 
     const startOfYear = new Date(birthday.getFullYear(), 0, 1);
@@ -8,20 +8,38 @@ export function getWeeksFromStartOfYear(birthdayString: string) {
     return weeks;
 }
 
-export function getPastWeeksInBirthYear(
+export function getPastWeeksCurrentYear(
+    birthdayString: string,
+    finalYear: number,
+) {
+    const birthday = new Date(birthdayString);
+    const today = new Date();
+
+    if (today.getFullYear() > birthday.getFullYear() + finalYear) {
+        return getUnbornWeeks(birthdayString);
+    }
+
+    const startOfYear = new Date(today.getFullYear(), 0, 1);
+    const timeDifference = today.getTime() - startOfYear.getTime();
+    const weeks = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 7)); // Floor to not include current week
+
+    return weeks;
+}
+
+export function getPastWeeksBirthYear(
     birthdayString: string,
     calendarString: string | undefined,
 ) {
     const birthday = new Date(birthdayString);
-    const comparisonDate = calendarString
+    const calendarCreation = calendarString
         ? new Date(calendarString)
         : new Date();
 
-    if (comparisonDate.getFullYear() != birthday.getFullYear()) {
-        return 52 - getWeeksFromStartOfYear(birthday.toString());
+    if (calendarCreation.getFullYear() != birthday.getFullYear()) {
+        return 52 - getUnbornWeeks(birthday.toString());
     }
 
-    const timeDifference = birthday.getTime() - comparisonDate.getTime();
+    const timeDifference = birthday.getTime() - calendarCreation.getTime();
     const weeks = Math.ceil(timeDifference / (1000 * 60 * 60 * 24 * 7));
 
     return weeks;
@@ -32,25 +50,18 @@ export function getPastWeeksInBirthYear(
  */
 export function getPastWeeksNoninclusive(
     birthdayString: string,
+    finalYear: number,
     calendarString: string | undefined,
 ) {
     const birthday = new Date(birthdayString);
-    const comparisonDate = calendarString
+    const calendarCreation = calendarString
         ? new Date(calendarString)
         : new Date();
 
-    return (comparisonDate.getFullYear() - birthday.getFullYear() - 1) * 52;
-}
-
-export function getNonPastWeeks(
-    birthdayString: string,
-    finalYear: number,
-    calendarDate: string | undefined,
-) {
     return (
-        finalYear * 52 -
-        getWeeksFromStartOfYear(birthdayString) -
-        getPastWeeksInBirthYear(birthdayString, calendarDate) -
-        getPastWeeksNoninclusive(birthdayString, calendarDate)
+        Math.min(
+            calendarCreation.getFullYear() - birthday.getFullYear() - 2,
+            finalYear - 1,
+        ) * 52
     );
 }
