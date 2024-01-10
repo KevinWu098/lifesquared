@@ -182,18 +182,19 @@ const LifeCalendar = ({
                     </div>
                 </div>
 
-                <h2 className="text-center py-4 gap-x-2 flex-center flex-row">
-                    <span>
-                        <span className="text-2xl tracking-tight font-normal leading-3">
-                            Now
-                        </span>
-                        <br />
-                        <span className="text-lg font-normal leading-[0.25rem]">
-                            you're
-                        </span>
-                    </span>
-                    <span className="font-bold text-5xl">{finalYear}</span>
-                </h2>
+                <div className="py-4 gap-x-2 flex flex-col ml-auto">
+                    <div className="flex-center text-center w-fit flex-col">
+                        <p className="w-fit text-xl font-semibold leading-[1rem]">
+                            NOW
+                        </p>
+                        <p className="w-fit text-lg font-normal leading-[2rem]">
+                            YOU'RE
+                        </p>
+                        <p className="w-fit font-bold text-5xl leading-[1.5rem]">
+                            {finalYear}
+                        </p>
+                    </div>
+                </div>
             </div>
         </>
     );
