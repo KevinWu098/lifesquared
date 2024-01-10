@@ -56,8 +56,7 @@ const LifeCalendar = ({
         birthday,
         calendar?.createdAt,
     );
-    const pastWeeksCurrentYear =
-        getWeeksFromStartOfYear(new Date().toString()) - 1; // Don't include current week
+    const pastWeeksCurrentYear = getWeeksFromStartOfYear(new Date().toString());
     const pastWeeks = Math.max(
         pastWeeksBirthYear + pastWeeksNoninclusive + pastWeeksCurrentYear,
         0,
