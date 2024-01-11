@@ -42,7 +42,8 @@ const LifeCalendar = ({
     dbFinalYear,
     dbWeekSquares,
 }: LifeCalendarProps) => {
-    const lsData = localStorage.getItem("lsData");
+    const lsData =
+        typeof window !== "undefined" ? localStorage.getItem("lsData") : null;
     const lsDataObject: LocalStorageData | null = lsData
         ? JSON.parse(lsData)
         : null;
