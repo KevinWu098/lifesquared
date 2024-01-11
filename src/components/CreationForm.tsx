@@ -56,6 +56,14 @@ const isDateValid = (dateStr: string) => {
     return true;
 };
 
+export type LocalStorageData = {
+    birthday: string;
+    finalYear: string;
+    weekSquares: boolean[] | null;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
 const FormSchema = z.object({
     birthday: z.string().refine((data) => isDateValid(data), {
         message: "Invalid birthday format or date. Please use mm/dd/yyyy.",
@@ -94,11 +102,16 @@ const CreationForm = ({
 
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
+    const lsData = localStorage.getItem("lsData");
+    const lsDataObject: LocalStorageData | null = lsData
+        ? JSON.parse(lsData)
+        : null;
+
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            birthday: birthday ?? "",
-            finalYear: finalYear?.toString() ?? "90",
+            birthday: birthday ?? lsDataObject?.birthday ?? "",
+            finalYear: finalYear?.toString() ?? lsDataObject?.finalYear ?? "90",
         },
     });
 
@@ -116,12 +129,23 @@ const CreationForm = ({
         },
     });
 
+    // Can submit same values, causes odd behavior with squares being wiped, but not rerendered since state is the same
     function onSubmit(data: z.infer<typeof FormSchema>) {
         const { birthday: newBirthday, finalYear: newFinalYear } = data;
 
         setBirthday(newBirthday);
         setFinalYear(parseInt(newFinalYear));
         setWeekSquares(null);
+
+        const localStorageData: LocalStorageData = {
+            birthday: newBirthday,
+            finalYear: newFinalYear,
+            weekSquares: null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
+
+        localStorage.setItem("lsData", JSON.stringify(localStorageData));
 
         updateUser({
             birthday: newBirthday,

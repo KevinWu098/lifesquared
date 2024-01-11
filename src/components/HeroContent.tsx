@@ -30,8 +30,8 @@ const HeroContent = ({ dbBirthday, dbFinalYear, dbWeekSquares }: HeroProps) => {
             />
 
             <LifeCalendar
-                birthday={birthday}
-                finalYear={finalYear}
+                dbBirthday={birthday}
+                dbFinalYear={finalYear}
                 dbWeekSquares={weekSquares}
             />
         </div>
