@@ -35,7 +35,7 @@ Interactive, online rendition of Wait But Why's Life Calendar. Usable with or wi
 ### In the Works (in rough order of priority):
 - Responsiveness across all devices
 - Export/Print as image
-- Local Storage
+- Local Storage ✅
 - Month, Year Calendars
 - Themes
 - Dark Mode 🐙
