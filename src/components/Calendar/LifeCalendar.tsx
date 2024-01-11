@@ -6,6 +6,7 @@ import RoundedBox from "@/components/Calendar/RoundedBox";
 import { WeekSquare } from "@prisma/client";
 import { Loader2 } from "lucide-react";
 
+import { LocalStorageData } from "../CreationForm";
 import { UpdatedAtPopover } from "../PopoverComponents";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
@@ -31,16 +32,24 @@ const PastSquare = () => {
 };
 
 interface LifeCalendarProps {
-    birthday: string | null;
-    finalYear: number | null;
+    dbBirthday: string | null;
+    dbFinalYear: number | null;
     dbWeekSquares: WeekSquare[] | null;
 }
 
 const LifeCalendar = ({
-    birthday,
-    finalYear,
+    dbBirthday,
+    dbFinalYear,
     dbWeekSquares,
 }: LifeCalendarProps) => {
+    const lsData = localStorage.getItem("lsData");
+    const lsDataObject: LocalStorageData | null = lsData
+        ? JSON.parse(lsData)
+        : null;
+
+    const birthday = dbBirthday ?? lsDataObject?.birthday ?? null;
+    const finalYear = dbFinalYear ?? Number(lsDataObject?.finalYear) ?? null;
+
     if (!birthday || !finalYear) {
         return null;
     }
@@ -74,7 +83,7 @@ const LifeCalendar = ({
     const falseArray = Array.from({ length: futureWeeks }, () => false);
     const weekSquares = dbWeekSquares
         ? dbWeekSquares.map((weekSquare) => weekSquare.value)
-        : falseArray;
+        : lsDataObject?.weekSquares ?? falseArray;
 
     const [isSaving, setIsSaving] = useState(false);
     const [checkboxValues, setCheckboxValues] =
@@ -82,7 +91,6 @@ const LifeCalendar = ({
 
     const handleCheckboxChange = (index: number) => {
         const newValues = [...checkboxValues];
-
         newValues[index] = !newValues[index];
 
         setCheckboxValues(newValues);
@@ -101,9 +109,20 @@ const LifeCalendar = ({
     });
 
     const handleSave = () => {
-        saveCalendar({
-            calendar: checkboxValues,
-        });
+        if (user.data) {
+            saveCalendar({
+                calendar: checkboxValues,
+            });
+        }
+
+        const newLsObjectData: LocalStorageData = {
+            birthday: birthday,
+            finalYear: finalYear.toString(),
+            weekSquares: checkboxValues,
+            createdAt: lsDataObject?.createdAt ?? new Date(),
+            updatedAt: new Date(),
+        };
+        localStorage.setItem("lsData", JSON.stringify(newLsObjectData));
     };
 
     return (
@@ -117,7 +136,6 @@ const LifeCalendar = ({
                             onClick={handleSave}
                             variant={"secondary"}
                             className="w-full"
-                            disabled={!user.data}
                         >
                             {isSaving ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -126,7 +144,12 @@ const LifeCalendar = ({
                             )}
                         </Button>
 
-                        <UpdatedAtPopover calendar={calendar} />
+                        <UpdatedAtPopover
+                            time={
+                                calendar?.updatedAt ??
+                                lsDataObject?.updatedAt.toString()
+                            }
+                        />
                     </div>
                     <h2 className="text-4xl font-bold text-center">
                         Life Calendar

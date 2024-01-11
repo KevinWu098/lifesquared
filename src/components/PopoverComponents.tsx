@@ -2,25 +2,17 @@ import { CalendarClock, CalendarPlus } from "lucide-react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
-interface CalendarPopoverProps {
-    calendar:
-        | {
-              createdAt: string;
-              id: string;
-              userId: string | null;
-              updatedAt: string;
-          }
-        | null
-        | undefined;
+interface PopoverProps {
+    time: string | undefined;
 }
 
-export const CreatedAtPopover = (calendar: CalendarPopoverProps) => {
+export const CreatedAtPopover = ({ time }: PopoverProps) => {
     const today = new Date();
-    const createdDate = calendar.calendar
+    const createdDate = time
         ? today.toISOString().slice(0, 10) ==
-          new Date(calendar.calendar.updatedAt).toISOString().slice(0, 10)
-            ? new Date(calendar.calendar.updatedAt).toLocaleTimeString("en-US")
-            : new Date(calendar.calendar.updatedAt).toLocaleDateString("en-US")
+          new Date(time).toISOString().slice(0, 10)
+            ? new Date(time).toLocaleTimeString("en-US")
+            : new Date(time).toLocaleDateString("en-US")
         : null;
 
     return (
@@ -35,13 +27,13 @@ export const CreatedAtPopover = (calendar: CalendarPopoverProps) => {
     );
 };
 
-export const UpdatedAtPopover = (calendar: CalendarPopoverProps) => {
+export const UpdatedAtPopover = ({ time }: PopoverProps) => {
     const today = new Date();
-    const updatedDate = calendar.calendar
+    const updatedDate = time
         ? today.toISOString().slice(0, 10) ==
-          new Date(calendar.calendar.updatedAt).toISOString().slice(0, 10)
-            ? new Date(calendar.calendar.updatedAt).toLocaleTimeString("en-US")
-            : new Date(calendar.calendar.updatedAt).toLocaleDateString("en-US")
+          new Date(time).toISOString().slice(0, 10)
+            ? new Date(time).toLocaleTimeString("en-US")
+            : new Date(time).toLocaleDateString("en-US")
         : null;
 
     return (
