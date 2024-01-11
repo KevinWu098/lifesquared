@@ -144,7 +144,12 @@ const LifeCalendar = ({
                             )}
                         </Button>
 
-                        <UpdatedAtPopover calendar={calendar} />
+                        <UpdatedAtPopover
+                            time={
+                                calendar?.updatedAt ??
+                                lsDataObject?.updatedAt.toString()
+                            }
+                        />
                     </div>
                     <h2 className="text-4xl font-bold text-center">
                         Life Calendar

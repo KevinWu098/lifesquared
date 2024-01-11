@@ -211,7 +211,12 @@ const CreationForm = ({
                         </div>
 
                         <div className="px-6 pb-6 flex justify-end gap-x-4">
-                            <CreatedAtPopover calendar={calendar} />
+                            <CreatedAtPopover
+                                time={
+                                    calendar?.createdAt ??
+                                    lsDataObject?.createdAt.toString()
+                                }
+                            />
                             <Button type="submit" className="w-20">
                                 {isUpdating ? (
                                     <Loader2 className="h-4 w-4 animate-spin" />
