@@ -102,7 +102,8 @@ const CreationForm = ({
 
     const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
-    const lsData = localStorage.getItem("lsData");
+    const lsData =
+        typeof window !== "undefined" ? localStorage.getItem("lsData") : null;
     const lsDataObject: LocalStorageData | null = lsData
         ? JSON.parse(lsData)
         : null;
