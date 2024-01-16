@@ -33,12 +33,12 @@ Interactive, online rendition of Wait But Why's Life Calendar. Usable with or wi
 - _~~Existential Dread~~_
 
 ### In the Works (in rough order of priority):
-- Responsiveness across all devices
-- Export/Print as image
-- Local Storage ✅
-- Month, Year Calendars
-- Themes
-- Dark Mode 🐙
+- [ ] Responsiveness across all devices
+- [ ] Export/Print as image
+- [x] Local Storage
+- [ ] Month, Year Calendars
+- [ ] Themes
+- [ ] Dark Mode 🐙
 
 
 ## Using Life, Squared
