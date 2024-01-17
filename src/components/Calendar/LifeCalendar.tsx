@@ -43,7 +43,7 @@ const LifeCalendar = ({
     dbWeekSquares,
 }: LifeCalendarProps) => {
     const lsData =
-        typeof window !== "undefined" ? localStorage.getItem("lsData") : null;
+        typeof window !== "undefined" ? localStorage.getItem("lsData") : null; // FIX THIS HYDRATION
     const lsDataObject: LocalStorageData | null = lsData
         ? JSON.parse(lsData)
         : null;
