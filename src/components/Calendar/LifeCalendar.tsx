@@ -130,7 +130,7 @@ const LifeCalendar = ({
         <>
             <Separator className="my-2" />
 
-            <div className="py-2 px-8 flex flex-col">
+            <div className="py-2 px-8 flex flex-col overflow-x-auto min-w-[1300px]">
                 <div className="py-4 flex flex-row justify-between">
                     <div className="flex-center gap-x-4 w-[165px]">
                         <Button
