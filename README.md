@@ -32,6 +32,7 @@ Interactive, online rendition of Wait But Why's Life Calendar. Usable with or wi
 - User accounts and saved calendars
 - _~~Existential Dread~~_
 
+<!--
 ### In the Works (in rough order of priority):
 - [ ] Responsiveness across all devices
 - [ ] Export/Print as image
@@ -39,7 +40,7 @@ Interactive, online rendition of Wait But Why's Life Calendar. Usable with or wi
 - [ ] Month, Year Calendars
 - [ ] Themes
 - [ ] Dark Mode 🐙
-
+-->
 
 ## Using Life, Squared
 Try out Life, Squared live! Click this link: [Life, Squared](https://lifesquared.vercel.app)
